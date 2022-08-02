@@ -1,0 +1,7 @@
+.people__item {
+  cursor: pointer;
+  border-radius: 5px;
+  &:hover {
+    background-color: rgb(255, 255, 155);
+  }
+}

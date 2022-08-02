@@ -1,0 +1,17 @@
+<div class="row mt-5">
+  <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+    <button
+      pButton
+      type="button"
+      class="p-button-success"
+      (click)="openFormPeople()"
+    >
+      New People
+    </button>
+    <div class="w-100 border-top border-2 mt-3"></div>
+    <form-list></form-list>
+  </div>
+  <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+    <router-outlet></router-outlet>
+  </div>
+</div>

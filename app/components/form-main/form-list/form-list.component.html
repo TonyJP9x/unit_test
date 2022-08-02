@@ -1,0 +1,19 @@
+<div class="w-100" *ngIf="people; else noPeople">
+  <div
+    class="row my-2 g-0"
+    *ngFor="let p of people"
+    routerLink="people/{{ p?.UserName }}"
+  >
+    <div class="col-12 border-2 border-success people__item">
+      <p class="text-primary fw-bold m-0">
+        UserName: <span class="text-success">{{ p?.UserName }}</span> -
+        FirstName: <span class="text-success">{{ p?.FirstName }}</span> -
+        LastName:
+        <span class="text-success">{{ p?.LastName }}</span>
+      </p>
+    </div>
+  </div>
+</div>
+<ng-template #noPeople>
+  <h3 class="">Loading...</h3>
+</ng-template>

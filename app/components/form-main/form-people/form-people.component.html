@@ -1,0 +1,297 @@
+<p-card
+  header="People Form"
+  [style]="{ width: '40rem', padding: '10px 10px' }"
+  class="card"
+  *ngIf="peopleForm; else noPeopleForm"
+  [formGroup]="peopleForm"
+>
+  <div class="grid">
+    <div class="col-12">
+      <button
+        pButton
+        type="button"
+        class="p-button-success"
+        [disabled]="peopleForm.invalid"
+        (click)="onSavePeople()"
+      >
+        Save
+      </button>
+      <button
+        pButton
+        type="button"
+        class="p-button-danger ms-2"
+        (click)="onCancel()"
+      >
+        Cancel
+      </button>
+    </div>
+    <div class="col-12 mt-2">
+      <div class="p-inputgroup">
+        <span class="p-float-label">
+          <input
+            type="text"
+            id="UserName"
+            pInputText
+            formControlName="UserName"
+            [readonly]="newForm === false"
+            [disabled]="newForm === false"
+            [class.disable]="newForm === false"
+            name="UserName"
+          />
+          <label for="UserName">User Name</label>
+        </span>
+      </div>
+      <div
+        *ngIf="
+          (userNameControls?.touched || userNameControls?.dirty) &&
+          userNameControls?.invalid
+        "
+        class="errors"
+      >
+        <div
+          *ngIf="
+            userNameControls?.errors &&
+            userNameControls?.errors?.['required']
+          "
+        >
+          <span class="text-danger">User Name is required</span>
+        </div>
+        <div
+          *ngIf="
+          userNameControls?.errors &&
+          userNameControls?.errors?.['UserNameDuplicated']
+          "
+          class="errors"
+        >
+          <span class="text-danger"
+            >{{ userNameControls?.value }} is Duplicated</span
+          >
+        </div>
+      </div>
+    </div>
+    <div class="col-12 mt-2">
+      <div class="p-inputgroup">
+        <span class="p-float-label">
+          <input
+            type="text"
+            id="FirstName"
+            pInputText
+            formControlName="FirstName"
+            name="FirstName"
+          />
+          <label for="FirstName">First Name</label>
+        </span>
+      </div>
+      <div
+        *ngIf="
+          (firstNameControls?.touched || firstNameControls?.dirty) &&
+          firstNameControls?.invalid
+        "
+        class="errors"
+      >
+        <div
+          *ngIf="
+            firstNameControls?.errors &&
+            firstNameControls?.errors?.['required']
+          "
+        >
+          <span class="text-danger">First Name is required</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 mt-2">
+      <div class="p-inputgroup">
+        <span class="p-float-label">
+          <input
+            type="text"
+            id="LastName"
+            pInputText
+            formControlName="LastName"
+            name="LastName"
+          />
+          <label for="LastName">Last Name</label>
+        </span>
+      </div>
+      <div
+        *ngIf="
+          (lastNameControls?.touched || lastNameControls?.dirty) &&
+          lastNameControls?.invalid
+        "
+        class="errors"
+      >
+        <div
+          *ngIf="
+            lastNameControls?.errors &&
+            lastNameControls?.errors?.['maxlength']
+          "
+        >
+          <span class="text-danger">Last Name must have a maximum of 26</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 mt-2">
+      <div class="p-inputgroup">
+        <span class="p-float-label">
+          <input
+            type="text"
+            id="MiddleName"
+            pInputText
+            formControlName="MiddleName"
+            name="MiddleName"
+          />
+          <label for="MiddleName">Middle Name</label>
+        </span>
+      </div>
+    </div>
+    <div class="col-12" formArrayName="Emails">
+      <ng-container *ngFor="let email of emailsArray?.controls; index as idx">
+        <div class="row align-items-center mt-4">
+          <div class="col-xl-10 col-lg-10 col-sm-12 col-sm-12">
+            <div class="p-inputgroup">
+              <span class="p-float-label">
+                <input
+                  class="form-control"
+                  type="email"
+                  id="emails"
+                  pInputText
+                  [formControlName]="idx"
+                  name="emails"
+                />
+                <label for="emails">Email</label>
+              </span>
+            </div>
+            <div
+              *ngIf="
+                (emailsArray.controls[idx]?.touched ||
+                  emailsArray.controls[idx]?.invalid) &&
+                emailsArray.controls[idx]?.dirty
+              "
+              class="errors"
+            >
+              <div
+                *ngIf="
+                  emailsArray.controls[idx]?.errors &&
+                  emailsArray.controls[idx]?.errors?.['email']
+                "
+              >
+                <span class="text-danger">Email is not correct pattern</span>
+              </div>
+              <div
+                *ngIf="
+                  emailsArray.controls[idx]?.errors &&
+                  emailsArray.controls[idx]?.errors?.['EmailDuplicated']
+                "
+              >
+                <span class="text-danger">Email is duplicated</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-2 col-lg-2 col-sm-12 col-sm-12">
+            <button
+              pButton
+              type="button"
+              icon="pi pi-times"
+              class="p-button-danger"
+              (click)="removeItemEmail(idx)"
+            ></button>
+          </div>
+        </div>
+      </ng-container>
+      <button
+        pButton
+        type="button"
+        class="p-button-success mt-4"
+        (click)="addEmail()"
+      >
+        Add Email
+      </button>
+    </div>
+    <div class="col-12" formArrayName="AddressInfo">
+      <ng-container
+        *ngFor="let address of addressArray?.controls; index as idx"
+      >
+        <div class="mt-4" [formGroupName]="idx">
+          <div class="row">
+            <div class="col-12 mt-2">
+              <div class="p-inputgroup">
+                <span class="p-float-label">
+                  <input
+                    type="text"
+                    id="Address"
+                    pInputText
+                    formControlName="Address"
+                    name="Address"
+                    placeholder="address..."
+                  />
+                  <label for="Address">Address</label>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="row" formGroupName="City">
+            <div class="col-12 mt-2">
+              <div class="p-inputgroup">
+                <span class="p-float-label">
+                  <input
+                    type="text"
+                    id="Name"
+                    pInputText
+                    formControlName="Name"
+                    name="Name"
+                  />
+                  <label for="Name">Name</label>
+                </span>
+              </div>
+            </div>
+            <div class="col-12 mt-2">
+              <div class="p-inputgroup">
+                <span class="p-float-label">
+                  <input
+                    type="text"
+                    id="CountryRegion"
+                    pInputText
+                    formControlName="CountryRegion"
+                    name="CountryRegion"
+                  />
+                  <label for="CountryRegion">Country region</label>
+                </span>
+              </div>
+            </div>
+            <div class="col-12 mt-2">
+              <div class="p-inputgroup">
+                <span class="p-float-label">
+                  <input
+                    type="text"
+                    id="Region"
+                    pInputText
+                    formControlName="Region"
+                    name="Region"
+                  />
+                  <label for="Region">Region</label>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-4 col-lg-4 col-sm-12 col-sm-12">
+            <button
+              pButton
+              type="button"
+              icon="pi pi-times"
+              class="p-button-danger"
+              (click)="removeItemAddressInfo(idx)"
+            ></button>
+          </div>
+        </div>
+      </ng-container>
+      <button
+        pButton
+        type="button"
+        class="p-button-success mt-4"
+        (click)="addAddressInfo()"
+      >
+        Add Address
+      </button>
+    </div>
+  </div>
+</p-card>
+<ng-template #noPeopleForm><h1>Please select a Recipe</h1></ng-template>
